@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% block title %}Analisis Sentimen Pada Layanan Trans Padang{% endblock %}
+{% block content %}
+  <!-- Flash Message -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+        <script type="text/javascript">
+            Swal.fire({
+                icon: "{{ category }}",
+                text: "{{ message }}",
+                });
+        </script>
+    {% endfor %}
+    </ul>
+    {% endif %}
+  {% endwith %}
+
+    <div style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 9999; pointer-events: auto;" id="spinnerOverlay">
+    <!-- Bootstrap Spinners -->
+      <div class="spinner-grow text-light me-2" role="status" style="width: 3rem; height: 3rem; animation-delay: 0s;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="spinner-grow text-light me-2" role="status" style="width: 3rem; height: 3rem; animation-delay: 0.3s;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+      <div class="spinner-grow text-light" role="status" style="width: 3rem; height: 3rem; animation-delay: 0.5s;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <div class="sidebar">
+    {% include 'sidebar.html' %}
+    </div>
+    <section class="home-section p-3">
+        <div class="container-fluid">
+            <h3 class="mb-4 fw-bold mt-2">Kelola Komentar</h3>
+            <div class="border-top border-2 rounded-2 px-4 py-3" style="background-color: white;">
+                <div class="row button-collection mt-2 mb-3">
+                    <div class="col-6">
+                      <button class="btn btn-primary me-3" id="btnAddData"><i class='bx bx-plus me-1'></i>Tambah Data</button>
+                      {% if count_nonclassify > 999 %}
+                      <button type="button" class="btn btn-outline-primary position-relative btn-tooltip" id="btnKlasifikasi"><i class='bx bx-folder bx-tada bx-rotate-90 me-1' ></i>
+                        Klasifikasi Sentimen Berbasis Aspek<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger">+999 </span>
+                        <span class="tooltiptext">{{count_nonclassify}} data belum diklasifikasi!</span>
+                      </button>
+                      {% elif count_nonclassify == 0 %}
+                      <button type="button" class="btn btn-outline-primary position-relative" id="btnKlasifikasi"><i class='bx bx-folder me-1'></i>
+                        Klasifikasi Sentimen Berbasis Aspek
+                      </button>
+                      {% else %}
+                      <button type="button" class="btn btn-outline-primary position-relative btn-tooltip" id="btnKlasifikasi"><i class='bx bx-folder bx-tada bx-rotate-90 me-1' ></i>
+                        Klasifikasi Sentimen Berbasis Aspek<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill text-bg-danger">{{ count_nonclassify }} </span>
+                        <span class="tooltiptext">{{count_nonclassify}} data belum diklasifikasi!</span>
+                      </button>
+                      {% endif %}
+                    </div>
+                    <div class="col-6 text-right">
+                      <button id="delete-button" class="btn btn-danger float-end"><i class='bx bx-trash me-1'></i>Hapus Data</button>
+                    </div>
+                </div>
+
+                <div class="add-data-container border-1 rounded-2 position-relative px-2" id="divAddData">
+                    <a class="btn position-absolute" id="btnCloseAddData" style="right: 5px; top:5px;"><i class='bx bx-x fs-4'></i></a>
+                    <div class="row align-items-center">
+                      <div class="col-lg-7 col-md-12 col-sm-12 p-3">
+                        <!-- write_data_section -->
+                        <div class="p-3" style="border-right: 1px solid rgb(33, 48, 99);">
+                          <form class="row g-3" action="{{ url_for('add_komentar') }}" method="post" id="form_data">
+                            <div class="col-md-6">
+                              <div class="input-group">
+                                <span class="input-group-text" id="inputTanggal-addon"><i class='bx bx-calendar-alt'></i></span>
+                                <input type="date" class="form-control" id="inputTanggal" name="tanggal" aria-label="Tanggal" aria-describedby="inputTanggal-addon" placeholder="Tanggal Posting" min="2021-01-01" required>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="input-group">
+                                <span class="input-group-text" id="inputUsername-addon">@</span>
+                                <input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username" aria-label="username" aria-describedby="inputUsername-addon" maxlength="30" required>
+                              </div>
+                            </div>
+                            <div class="col-12">
+                              <div class="input-group">
+                                <span class="input-group-text"><i class='bx bx-comment'></i></span>
+                                <textarea class="form-control" id="inputKomentar" rows="2" name="komentar" placeholder="Masukkan Komentar ..." required></textarea>
+                              </div>
+                            </div>
+                            <div class="col-12 text-end">
+                              <input class="btn btn-primary me-2" value="Simpan" id="btnSubmitData" name="submit_data" type="submit">
+                              <button class="btn btn-danger" type="reset">Reset</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                      <div class="col-lg-5 col-md-12 col-sm-12 p-3">
+                        <!-- upload_data_section  -->
+                          <div class="position-relative">
+                            <button type="button" class="btn position-absolute" style="color: rgb(33, 48, 99)" data-bs-toggle="modal" data-bs-target="#infoModal">
+                              <i class='bx bx-info-circle fs-4'></i>
+                            </button>
+                          </div>
+                          <div class="p-3 text-center me-4">
+                            <text class="fw-regular text-secondary fs-2"><i id="logo-upload-file" class='bx bx-upload'></i></text>
+                            <form action="{{ url_for('add_komentar') }}" id="form_file" method="post" enctype="multipart/form-data">
+                              <input class="d-none" type="file" id="fileInput" name="file_input">
+                              <p class="text-secondary" id="fileName">atau pilih file .json yang akan diunggah!</p>
+                            
+                              <input class="btn btn-primary me-2" value="Simpan" id="btnSubmitFile" name="submit_file" type="submit">
+                              <button class="btn btn-danger" id="btnCancelSubmitFile" type="button">Batal</button>
+                            </form>
+                            <button class="btn btn-primary" id="btnPilihFile">Pilih File</button>
+                          </div>
+                      </div>
+                    </div>
+                </div>
+                
+                <div class="datatable mt-4">
+                    <table id="tabelKomentar" class="table table-striped" width=100%>
+                      <thead>
+                        <tr>
+                          <th class="dt-head-center">No</th>
+                          <th class="dt-head-center">Tanggal Posting</th>
+                          <th class="dt-head-center">Komentar</th>
+                          <th class="dt-head-center">Opini</th>
+                          <th class="dt-head-center">Aspek</th>
+                          <th class="dt-head-center">Sentimen</th>
+                          <th class="dt-head-center">#</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          {% for row in data %}
+                          <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ row['tanggal'] }}</td>
+                            <td style="text-align: justify;">{{ row['komentar'] }}</td>
+
+                            {% if row['opini'] == 1 %}
+                            <td class="text-center"><span class="badge badge-primary text-wrap">Opini</span></td>
+                            {% elif row['opini'] == 0 %}
+                            <td class="text-center"><span class="badge badge-danger text-wrap">Non Opini</span></td>
+                            {% else %}
+                            <td class="text-center"><span class="badge badge-missing text-wrap">--</span></td>
+                            {% endif %}
+
+                            {% if row['topik'] == 1 %}
+                            <td class="text-center"><span class="badge badge-primary text-wrap">Isu Waktu Operasional</span></td>
+                            {% elif row['topik'] == 2 %}
+                            <td class="text-center"><span class="badge badge-primary text-wrap">Isu Halte</span></td>
+                            {% elif row['topik'] == 3 %}
+                            <td class="text-center"><span class="badge badge-primary text-wrap">Isu Rute</span></td>
+                            {% elif row['topik'] == 4 %}
+                            <td class="text-center"><span class="badge badge-primary text-wrap">Isu Pembayaran</span></td>
+                            {% elif row['topik'] == 5 %}
+                            <td class="text-center"><span class="badge badge-primary text-wrap">Isu Perawatan Bus</span></td>
+                            {% elif row['topik'] == 6 %}
+                            <td class="text-center"><span class="badge badge-primary text-wrap">Isu Transit</span></td>
+                            {% elif row['topik'] == 7 %}
+                            <td class="text-center"><span class="badge badge-primary text-wrap">Isu Petugas</span></td>
+                            {% elif row['topik'] == 0 %}
+                            <td class="text-center"><span class="badge badge-danger text-wrap">Lainnya</span></td>
+                            {% else %}
+                            <td class="text-center"><span class="badge badge-missing text-wrap">--</span></td>
+                            {% endif %}
+
+                            {% if row['sentimen'] == 1 %}
+                            <td class="text-center"><span class="badge badge-primary text-wrap">Positif</span></td>
+                            {% elif row['sentimen'] == 0 %}
+                            <td class="text-center"><span class="badge badge-danger text-wrap">Negatif</span></td>
+                            {% else %}
+                            <td class="text-center"><span class="badge badge-missing text-wrap">--</span></td>
+                            {% endif %}
+                            <td><input type="checkbox" value="{{ row['id_komentar']}}"></td>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="modal-title fs-5" id="infoModalLabel">Petunjuk Penambahan Data Komentar</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            ...
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+            <!-- <button type="button" class="btn btn-primary">Saya Sudah Paham</button> -->
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

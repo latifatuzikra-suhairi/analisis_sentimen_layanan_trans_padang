@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+{% block title %}Analisis Sentimen Pada Layanan Trans Padang{% endblock %}
+{% block content %}
+    <div class="sidebar">
+        {% include 'sidebar.html' %}
+    </div>
+
+    <section class="home-section p-3">
+      <div class="container-fluid overflow-hidden">
+        <h1 class="mb-4 fw-bolder text-center mt-2">Dashboard Analisis Sentimen Berbasis Aspek<br>Pada Layanan Trans Padang</h1>
+        <!-- row pertama -->
+        <div class="row mt-4">
+          <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="card rounded-2 border-0" style="min-height: 107px;">
+              <div class="card-body skeleton">
+                <h6 class="card-title text-title-card fw-bold skeleton">Filter Tanggal Komentar</h6>
+                <div class="input-group skeleton">
+                  <span class="input-group-text" id="daterangegroup"><i class='bx bx-filter-alt' width="25px"></i></span>
+                  <input type="text" class="form-control" id="dateRangePicker" placeholder="Pilih Rentang Tanggal" aria-label="daterange" aria-describedby="daterangegroup" name="daterange" value="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-4">
+            <div class="card rounded-2 border-0" style="min-height: 107px;">
+              <div class="card-body skeleton position-relative">
+                <div class="position-absolute top-50 end-0" style="transform: translateY(-50%); padding-right: 16px;">
+                    <img src="{{ url_for('static', filename='img/comment.svg') }}" alt="icon" width="60px" height="60px"/>
+                </div>
+                <h6 class="card-title text-title-card fw-bold skeleton">Data Komentar</h6>
+                <p class="card-text fw-bold text-primary-card skeleton" id="c_kom">{{ c_kom }}</p>
+            </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-4">
+            <div class="card rounded-2 border-0" style="min-height: 107px;">
+                <div class="card-body skeleton position-relative">
+                    <div class="position-absolute top-50 end-0" style="transform: translateY(-50%); padding-right: 16px;">
+                        <img src="{{ url_for('static', filename='img/opini.svg') }}" alt="icon" width="70px" height="70px"/>
+                    </div>
+                    <h6 class="card-title text-title-card fw-bold skeleton">Data Opini</h6>
+                    <p class="card-text fw-bold text-primary-card skeleton" id="c_op">{{ c_op }}</p>
+                </div>
+            </div>
+          </div>
+          <div class="col-lg-2 col-md-4 col-sm-4">
+            <div class="card rounded-2 border-0" style="min-height: 107px;">
+              <div class="card-body skeleton position-relative">
+                <div class="position-absolute top-50 end-0" style="transform: translateY(-50%); padding-right: 16px;">
+                    <img src="{{ url_for('static', filename='img/non-opini.svg') }}" alt="icon" width="60px" height="60px"/>
+                </div>
+                <h6 class="card-title text-title-card fw-bold skeleton">Data Non Opini</h6>
+                <p class="card-text fw-bold text-primary-card skeleton" id="c_nop">{{ c_nop }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- row kedua -->
+        <div class="row mt-4">
+          <div class="col-lg-8 col-md-12 col-sm-12">
+            <div class="card rounded-2 border-0" style="min-height: 421px;">
+              <div class="card-body skeleton">
+                <h6 class="card-title text-title-card fw-bold skeleton">Data Komentar yang Masuk</h6>
+                <div class="skeleton" id="fig1" style="height: 100%; width: 100%;"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 col-sm-6">
+            <div class="row">
+              <div class="col-6">
+                <div class="card rounded-2 border-0" style="min-height: 107px;">
+                  <div class="card-body skeleton position-relative">
+                    <div class="position-absolute top-50 end-0" style="transform: translateY(-50%);">
+                        <img src="{{ url_for('static', filename='img/pos-sentimen.svg') }}" alt="icon" width="70px" height="70px"/>
+                    </div>
+                    <h6 class="card-title text-title-card fw-bold skeleton">Sentimen Positif</h6>
+                    <p class="card-text fw-bold text-primary-card skeleton" id="c_pos">{{ c_pos }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="card rounded-2 border-0" style="min-height: 107px;">
+                  <div class="card-body skeleton position-relative">
+                    <div class="position-absolute top-50 end-0" style="transform: translateY(-50%);">
+                        <img src="{{ url_for('static', filename='img/neg-sentimen.svg') }}" alt="icon" width="70px" height="70px"/>
+                    </div>
+                    <h6 class="card-title text-title-card fw-bold skeleton">Sentimen Negatif</h6>
+                    <p class="card-text fw-bold text-primary-card skeleton" id="c_neg">{{ c_neg }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-lg-12 col-md-2">
+                <div class="card rounded-2 border-0" style="min-height: 290px;">
+                  <div class="card-body skeleton">
+                    <h6 class="card-title text-title-card fw-bold skeleton">Aspek Layanan Trans Padang Yang Dikomentari</h6>
+                    <p class="card-text fs-4 fw-bold text-primary skeleton"></p>
+                    <div id="fig2" class="skeleton" style="height: 100%; width: 100%;"></div>
+                  </div>
+                </div>
+              </div>
+
+            </div>  
+          </div>
+        </div> 
+
+        <!-- row ketiga -->
+        <div class="row mt-4">
+          <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="card rounded-2 border-0">
+              <div class="card-body skeleton" style="height: 768px;">
+                <h6 class="card-title fw-bold text-title-card skeleton">Cuplikan Data Komentar</h6>
+                  <div class="datatable mt-4 skeleton">
+                    <select id="filter" class="form-select">
+                      <option value="">Semua</option>
+                      <option value="Opini">Opini</option>
+                      <option value="Non Opini">Non Opini</option>
+                    </select>
+                    <table id="tabelCuplikanKomentar" class="table table-striped" width="100%", height="100%">
+                      <thead>
+                        <tr>
+                          <th class="dt-head-center">No</th>
+                          <th class="dt-head-center">Komentar</th>
+                          <th class="dt-head-center">Opini</th>
+                          <th class="dt-head-center">Aspek</th>
+                          <th class="dt-head-center">Sentimen</th>
+                        </tr>
+                      </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-lg-6 col-md-12 col-sm-12">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card rounded-2 border-0" style="min-height: 372px;">
+                  <div class="card-body skeleton">
+                    <h6 class="card-title fw-bold text-title-card skeleton">Distribusi Sentimen</h6>
+                    <div id="fig4" class="skeleton" style="height: 100%; width: 100%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row mt-4">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card rounded-2 border-0" style="min-height: 372px;">
+                  <div class="card-body skeleton">
+                    <h6 class="card-title fw-bold text-title-card skeleton">Komposisi Aspek Layanan Pada Tiap Sentimen</h6>
+                    <div id="fig3" class="skeleton" style="height: 100%; width: 100%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div> 
+
+        <div class="row mt-4">
+          <div class="col-6">
+            <div class="card rounded-2 border-0">
+              <div class="card-body skeleton">
+                <h6 class="card-title fw-bold text-title-card skeleton">WordCloud Sentimen Positif</h6>
+                <div class="d-flex flex-column align-items-center mt-3 skeleton">
+                  <label class="fs-6 mb-2">Pilih Aspek Layanan</label>
+                  <select id="selectWordcloudPos" class="form-select w-50" aria-label="Pilih">
+                    <option value="99"selected>Semua Aspek</option>
+                    <option value="1">Isu Waktu Operasional</option>
+                    <option value="2">Isu Halte</option>
+                    <option value="3">Isu Rute</option>
+                    <option value="4">Isu Pembayaran</option>
+                    <option value="5">Isu Perawatan Bus</option>
+                    <option value="6">Isu Transit</option>
+                    <option value="7">Isu Petugas</option>
+                    <option value="0">Lainnya</option>
+                  </select>
+                </div> 
+                <div class="d-flex flex-column align-items-center mt-4 mb-3 p-2 skeleton">
+                  <div style="top: 0; left: 0; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; pointer-events: auto;" id="spinnerWordCloudPos">
+                    <!-- Bootstrap Spinners -->
+                      <div class="spinner-grow text-secondary me-2" role="status" style="width: 1.5rem; height: 1.5rem; animation-delay: 0s;">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                      <div class="spinner-grow text-secondary me-2" role="status" style="width: 1.5rem; height: 1.5rem; animation-delay: 0.3s;">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                      <div class="spinner-grow text-secondary" role="status" style="width: 1.5rem; height: 1.5rem; animation-delay: 0.5s;">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                  </div>
+                  <div id="wordcloud_pos_alert" class="alert alert-danger text-center" role="alert" style="width: 70%;"></div>
+                  <img id="wordcloud_pos" src="" alt="Wordcloud Positif" style="width: 70%;">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+            <div class="card rounded-2 border-0">
+              <div class="card-body skeleton">
+                <h6 class="card-title fw-bold text-title-card">WordCloud Sentimen Negatif</h6>
+                <div class="d-flex flex-column align-items-center mt-3 skeleton">
+                  <label class="fs-6 mb-2 skeleton">Pilih Aspek Layanan</label>
+                  <select id="selectWordcloudNeg" class="form-select w-50" aria-label="Pilih">
+                    <option value="99"selected>Semua Aspek</option>
+                    <option value="1">Isu Waktu Operasional</option>
+                    <option value="2">Isu Halte</option>
+                    <option value="3">Isu Rute</option>
+                    <option value="4">Isu Pembayaran</option>
+                    <option value="5">Isu Perawatan Bus</option>
+                    <option value="6">Isu Transit</option>
+                    <option value="7">Isu Petugas</option>
+                    <option value="0">Lainnya</option>
+                  </select>
+                </div>
+                <div class="d-flex flex-column align-items-center mt-4 mb-3 p-2 skeleton">
+                  <div style="top: 0; left: 0; width: 100%; height: 100%; display: none; justify-content: center; align-items: center; pointer-events: auto;" id="spinnerWordCloudNeg">
+                    <!-- Bootstrap Spinners -->
+                      <div class="spinner-grow text-secondary me-2" role="status" style="width: 1.5rem; height: 1.5rem; animation-delay: 0s;">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                      <div class="spinner-grow text-secondary me-2" role="status" style="width: 1.5rem; height: 1.5rem; animation-delay: 0.3s;">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                      <div class="spinner-grow text-secondary" role="status" style="width: 1.5rem; height: 1.5rem; animation-delay: 0.5s;">
+                        <span class="visually-hidden">Loading...</span>
+                      </div>
+                  </div>
+                  <div id="wordcloud_neg_alert" class="alert alert-danger text-center" role="alert" style="width: 70%;"></div>
+                  <img id="wordcloud_neg" src="" alt="Wordcloud Negatif" style="width: 70%;">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Analisis Sentimen Pada Layanan Trans Padang{% endblock %}
+{% block content %}
+    <!-- Flash Message -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+            <script type="text/javascript">
+                Swal.fire({
+                    icon: "{{ category }}",
+                    title: "Oops...",
+                    text: "{{ message }}",
+                    });
+            </script>
+        {% endfor %}
+        </ul>
+        {% endif %}
+    {% endwith %}
+
+    <div class="row vh-100 g-0">
+        <!-- left side -->
+        <div class="col-lg-6 position-relative d-none d-lg-block">
+            <div class="bg-holder"></div>
+        </div>
+        <!-- right side -->
+        <div class="col-lg-6">
+            <div class="row align-items-center justify-content-center h-100 g-0 px-2 px-sm-0">
+                <div class="col col-sm-6 col-lg-8 col-xl-8">
+                    <!-- logo -->
+                    <a href="#" class="d-flex justify-content-center mb-2">
+                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="logo transpadang" height="60">
+                    </a>
+                    
+                    <div class="text-center mb-3">
+                        <h3 class="fw-bold">{{ title }}</h3>
+                        <p class="text-secondary mt-5">Dapatkan akses ke akun Anda</p>
+                    </div>
+                    <!-- Form Login -->
+                    <form action="{{ url_for('login') }}" method="post">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="bx bx-user"></i>
+                            </span>
+                            <input type="hidden" name="next" value="{{ request.args.get('next') }}">
+                            <input type="text" class="form-control form-control-lg fs-6" placeholder="Email" name="email" required>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="bx bx-lock-alt"></i>
+                            </span>
+                            <input type="password" class="form-control form-control-lg fs-6" placeholder="Password" name="password" required>
+                        </div>
+                        <!-- button submit -->
+                        <button class="mt-2 btn btn-primary w-100">Login</button>
+                    </form>
+                    <!-- Divider -->
+                    <div class="position-relative mt-4 ">
+                        <hr class="text-secondary divider">
+                        <div class="divider-content-center text-secondary">atau</div>
+                    </div>
+
+                    <div class="mb-3 text-center">
+                        <p class="text-secondary mt-3" style="font-size: 14px;">Lihat <a href="{{ url_for('dashboard') }}" style="text-decoration: none; color: #213063;">Dashboard</a></p>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

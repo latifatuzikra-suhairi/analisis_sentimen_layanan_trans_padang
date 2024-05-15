@@ -1,0 +1,49 @@
+<div class="logo_details">
+    <div class="icon">
+      <img src="{{ url_for('static', filename='img/TP-logo.png') }}" alt="TP Logo" style="height: 35px;">
+    </div>
+    <!-- <i class="bx bxl-audible icon"></i> -->
+    <!-- <div class="logo_name">Trans Padang</div> -->
+    <i class="bx bx-menu" id="btn-toggle"></i>
+  </div>
+  <ul class="nav-list">
+    <li>
+      <a class="page" id="menu_dashboard" href="{{ url_for('dashboard') }}">
+        <i class='bx bx-bar-chart-alt'></i>
+        <span class="link_name">Dashboard</span>
+      </a>
+      <span class="tooltip">Dashboard</span>
+    </li>
+  <!-- Cek Kondisi Login -->
+  {% if not username %} 
+    <li class="profile">
+      <a id="log_in" href="{{ url_for('login') }}">
+        <i class='bx bx-log-in'></i>
+        <span class="link_name">Login</span>
+      </a>
+      <span class="tooltip">Login</span>
+    </li>
+    {% else %}
+    <li>
+      <a class="page" id="menu_beranda" href="{{ url_for('beranda') }}">
+        <i class='bx bx-conversation'></i>
+        <span class="link_name">Komentar</span>
+      </a>
+      <span class="tooltip">Komentar</span>
+    </li>
+    <li class="profile">
+      <div class="profile_details">
+        <img src="{{ url_for('static', filename='img/profile.png') }}" alt="profile image">
+        <div class="profile_content">
+          <div class="name">{{ username | capitalize }}</div>
+          <div class="designation">{{ email }}</div>
+        </div>
+      </div>
+      <a id="log_out">
+        <i class="bx bx-log-out"></i>
+      </a>
+      <span class="tooltip">Logout</span>
+    </li>
+    {% endif %}
+  </ul>
+</div>
