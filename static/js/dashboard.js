@@ -72,6 +72,112 @@ $(document).ready(function() {
     }
     fetchMinMaxDate()
 
+    // fungsi untuk menampilkan figure secara async pada dashboard
+    async function showFigure(fig_title, data){
+        Plotly.newPlot(fig_title, JSON.parse(data), {responsive: true});
+    }
+    
+    async function showCuplikanData(start, end){
+        $('#tabelCuplikanKomentar').DataTable({
+            "processing" : true,
+            "serverSide" : true,
+            "responsive": true,
+            "paging" : true,
+            "searching" : true,
+            "destroy" : true,
+            "ajax" : {
+                url : "/dashboard_komentar",
+                type : "POST",
+                dataType : "json",
+                data: {
+                    start_date: start,
+                    end_date: end
+                },
+            },
+            "columns": [
+                { data: null },
+                { data: 'komentar'},
+                { data: 'opini', className: 'text-center', render: function(data){
+                    let className = '';
+                    let text = '';
+                    if (data === 1) {
+                        className = 'badge-primary';
+                        text = 'Opini';
+                    } else if (data === 0) {
+                        className = 'badge-danger';
+                        text = 'Non Opini';
+                    } else {
+                        className = 'badge-missing';
+                        text = '--';
+                    }
+                    return `<span class='badge ${className} text-wrap'>${text}</span>`;
+                }},
+                { data: 'topik', className: 'text-center', render: function(data){
+                    let className = '';
+                    let text = '';
+                    if (data === 1) {
+                        className = 'badge-primary';
+                        text = 'Isu Waktu Operasional';
+                    } else if (data === 2) {
+                        className = 'badge-primary';
+                        text = 'Isu Halte';
+                    } else if (data === 3) {
+                        className = 'badge-primary';
+                        text = 'Isu Rute';
+                    }
+                    else if (data === 4) {
+                        className = 'badge-primary';
+                        text = 'Isu Pembayaran';
+                    }
+                    else if (data === 5) {
+                        className = 'badge-primary';
+                        text = 'Isu Perawatan Bus';
+                    }
+                    else if (data === 6) {
+                        className = 'badge-primary';
+                        text = 'Isu Transit';
+                    }
+                    else if (data === 7) {
+                        className = 'badge-primary';
+                        text = 'Isu Petugas';
+                    }
+                    else if (data === 0) {
+                        className = 'badge-danger';
+                        text = 'Lainnya';
+                    }
+                    else {
+                        className = 'badge-missing';
+                        text = '--';
+                    }
+                    return `<span class='badge ${className} text-wrap'>${text}</span>`;
+                }},
+                { data: 'sentimen', className: 'text-center', render: function(data){
+                    let className = '';
+                    let text = '';
+                    if (data === 1) {
+                        className = 'badge-primary';
+                        text = 'Positif';
+                    } else if (data === 0) {
+                        className = 'badge-danger';
+                        text = 'Negatif';
+                    } else {
+                        className = 'badge-missing';
+                        text = '--';
+                    }
+                    return `<span class='badge ${className} text-wrap'>${text}</span>`;
+                }},
+            ],
+            rowCallback: function(row, data, index) {
+                // Add the row number
+                var table = $('#tabelCuplikanKomentar').DataTable();
+                var info = table.page.info();
+                var rowIndex = (info.page * info.length + index + 1);
+                $('td:eq(0)', row).html(rowIndex);
+            },
+        });
+
+    }
+
     // fetch data dashboard
     function fetchDataDashboard(start, end){
         $.ajax({
@@ -85,7 +191,7 @@ $(document).ready(function() {
                 if(data.hasOwnProperty('action')) {
                     if(data.hasOwnProperty('user')){
                         if(data.user == "auth"){
-                            console.log(data)
+                            // console.log(data)
                             Swal.fire({
                                 title: 'Dashboard',
                                 text: data.msg,
@@ -139,65 +245,22 @@ $(document).ready(function() {
                     }
                 }
                 else{
+                    // menampilkan data yang berbentuk angka
                     $("#c_kom").text(data.c_kom);
                     $("#c_op").text(data.c_op);
                     $("#c_nop").text(data.c_nop);
                     $("#c_pos").text(data.c_pos);
                     $("#c_neg").text(data.c_neg);
-                    Plotly.newPlot('fig1', JSON.parse(data.fig1), {responsive: true});
-                    Plotly.newPlot('fig2', JSON.parse(data.fig2), {responsive: true});
-                    Plotly.newPlot('fig3', JSON.parse(data.fig3), {responsive: true});
-                    Plotly.newPlot('fig4', JSON.parse(data.fig4), {responsive: true});
 
-                    // datatable
-                    var data_komentar = JSON.parse(data.data);
-                    var table = $('#tabelCuplikanKomentar').DataTable({
-                        "retrieve": true,
-                        "lengthMenu": [[10, 25, -1], [10, 25, "All"]],
-                        "scrollY": '490px',
-                        "scrollCollapse": true,
-                    });
+                    // menampilkan data yang berbentuk figure
+                    showFigure('fig1', data.fig1);
+                    showFigure('fig2', data.fig2);
+                    showFigure('fig3', data.fig3);
+                    showFigure('fig4', data.fig4);
 
-                    $('#filter').on('change', function() {
-                        // Filter tabel berdasarkan pilihan
-                        var val = $.fn.dataTable.util.escapeRegex($(this).val());
-                        table.column(2).search(val ? '^'+val+'$' : '', true, false).draw();
-                    });
+                    // datatable cuplikan data komentar
+                    showCuplikanData(start_date, end_date);
 
-                    // Hapus data lama
-                    table.clear().draw();
-
-                    // Tambahkan data ke tabel
-                    for(let i = 0; i < data_komentar.length; i++) {
-                        let opini, topik, sentimen;
-                        let css_opini, css_sentimen, css_aspek;
-
-                        if (data_komentar[i]['opini'] == 1) {opini = "Opini"; css_opini = "badge-primary"; }
-                        else if (data_komentar[i]['opini'] == 0) { opini = "Non Opini"; css_opini = "badge-danger"; }
-                        else {opini = "--"; css_opini = "badge-missing";}
-
-                        if (data_komentar[i]['topik'] == 1) {topik = "Isu Waktu Operasional"; css_aspek = "badge-primary";}
-                        else if (data_komentar[i]['topik'] == 2) {topik = "Isu Halte"; css_aspek = "badge-primary";} 
-                        else if (data_komentar[i]['topik'] == 3) {topik = "Isu Rute"; css_aspek = "badge-primary";}
-                        else if (data_komentar[i]['topik'] == 4) {topik = "Isu Pembayaran"; css_aspek = "badge-primary";}
-                        else if (data_komentar[i]['topik'] == 5) {topik = "Isu Perawatan Bus"; css_aspek = "badge-primary";}
-                        else if (data_komentar[i]['topik'] == 6) {topik = "Isu Transit"; css_aspek = "badge-primary";}
-                        else if (data_komentar[i]['topik'] == 7) {topik = "Isu Petugas"; css_aspek = "badge-primary";}
-                        else if (data_komentar[i]['topik'] == 0) {topik = "Lainnya"; css_aspek = "badge-danger";}
-                        else {topik = "--"; css_aspek = "badge-missing";}
-                        
-                        if (data_komentar[i]['sentimen'] == 1) {sentimen = "Positif"; css_sentimen = "badge-primary";}
-                        else if (data_komentar[i]['sentimen'] == 0) {sentimen = "Negatif"; css_sentimen = "badge-danger";}
-                        else {sentimen = "--"; css_sentimen = "badge-missing";}
-
-                        table.row.add([
-                            i+1,
-                            data_komentar[i]['komentar'],
-                            '<span class="badge ' + css_opini + ' text-wrap">' + opini + '</span>',
-                            '<span class="badge ' + css_aspek + ' text-wrap">' + topik + '</span>',
-                            '<span class="badge ' + css_sentimen + ' text-wrap">' + sentimen + '</span>',
-                        ]).draw();
-                    }
                     fetchWordCloud(start_date, end_date, topikWordcloudNeg);
                     
                     $('.skeleton').removeClass('skeleton');

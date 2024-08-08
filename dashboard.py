@@ -391,7 +391,7 @@ def wordcloud(data):
     cmap = LinearSegmentedColormap.from_list("mycmap", colors)
 
     # membuat objek wordcloud
-    wc = WordCloud(background_color='white', colormap=cmap, max_words=30)
+    wc = WordCloud(background_color='white', colormap=cmap, max_words=20)
     wc.generate(text)
 
     # Simpan wordcloud sebagai gambar PNG

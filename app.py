@@ -3,7 +3,7 @@ from flask import Flask, redirect, url_for, render_template, request, flash, jso
 
 # database
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import text, bindparam, func, create_engine
+from sqlalchemy import text, bindparam, func
 
 # autentikasi
 from flask_bcrypt import Bcrypt
@@ -78,7 +78,7 @@ class Komentar(db.Model):
 @app.before_request
 def make_session_permanent():
     session.permanent = True
-    if 'last_active' in session and datetime.now(timezone.utc) - session['last_active'] > timedelta(minutes=30):
+    if 'last_active' in session and datetime.now(timezone.utc) - session['last_active'] > timedelta(minutes=120):
         logout_user()
         flash('Session Anda habis. Silahkan log in kembali.', "warning")
         return redirect(url_for('login'))
@@ -118,6 +118,49 @@ def get_data_dashboard():
             fig2 = ds.distribusi_aspek_layanan(data_komentar)
             fig3 = ds.komposisi_topik_sentimen(data_komentar)
             fig4 = ds.sentimen_per_hari(data_komentar, start_date, end_date)
+            
+            # cuplikan_komentar = db.session.query(
+            #     Komentar.komentar,
+            #     case(
+            #         (Komentar.opini == 1, 'Opini'),
+            #         (Komentar.opini == 0, 'Non Opini'),
+            #         else_='--'
+            #     ).label('opini'),
+            #     case(
+            #         (Komentar.topik == 1, 'Isu Waktu Operasional'),
+            #         (Komentar.topik == 2, 'Isu Halte'),
+            #         (Komentar.topik == 3, 'Isu Rute'),
+            #         (Komentar.topik == 4, 'Isu Pembayaran'),
+            #         (Komentar.topik == 5, 'Isu Perawatan Bus'),
+            #         (Komentar.topik == 6, 'Isu Transit'),
+            #         (Komentar.topik == 7, 'Isu Petugas'),
+            #         (Komentar.topik == 0, 'Lainnya'),
+            #         else_='--'
+            #     ).label('topik'),
+            #     case(
+            #         (Komentar.sentimen == 1, 'Positif'),
+            #         (Komentar.sentimen == 0, 'Negatif'),
+            #         else_='--'
+            #     ).label('sentimen')
+            # ).filter(
+            #     func.date(Komentar.tanggal) >= start_date.date(),
+            #     func.date(Komentar.tanggal) <= end_date.date(),
+            #     Komentar.opini.isnot(None)  # Filter to ensure opini is not None
+            # ).all()
+
+            # # Konversi hasil query ke dalam format JSON
+            # data_cuplikan_json = json.dumps([
+            #     {
+            #         'komentar': komentar,'opini': opini,'topik': topik,'sentimen': sentimen
+            #     }
+            #     for komentar, opini, topik, sentimen in cuplikan_komentar
+            # ], ensure_ascii=False, indent=4)
+
+
+            # data_cuplikan_komentar = pd.DataFrame([k.to_dict() for k in cuplikan_komentar])
+            # data_komentar_json = data_cuplikan_komentar.to_json(orient='records')
+            # print(data_komentar_json)
+
             # filter data yang sudah terklasifikasi saja
             data = data_komentar[data_komentar["opini"].notnull()]
             data_komentar_json = data.to_json(orient='records')
@@ -131,7 +174,7 @@ def get_data_dashboard():
                             'fig2' : fig2,
                             'fig3' : fig3,
                             'fig4' : fig4,
-                            'data' : data_komentar_json
+                            'data': data_komentar_json
                             })
         
         # jika tidak ada data dalam rentang tanggal tersebut
@@ -151,6 +194,18 @@ def get_data_dashboard():
             action = "error"
             user = "not_auth"
         return jsonify({'msg': msg, 'action': action, 'user':user})
+    
+@app.route("/dashboard_komentar", methods=["POST"])
+def get_data_cuplikan_dashboard(): 
+    start_date = datetime.strptime((request.form.get('start_date')), "%Y/%m/%d")
+    end_date = datetime.strptime((request.form.get('end_date')), "%Y/%m/%d") 
+
+    # filter data yang sudah terklasifikasi saja
+    data_komentar = get_filtered_data_komentar(start_date, end_date)
+    data = data_komentar[data_komentar["opini"].notnull()]
+    data_komentar_json = data.to_json(orient='records')
+
+    return jsonify({'data': json.loads(data_komentar_json)})
 
 @app.route("/wordcloud_pos", methods=["POST"])
 def get_wordcloud_pos():
@@ -204,6 +259,19 @@ def get_wordcloud():
     wordcloud_neg = get_wordcloud_neg().get_json()
 
     return jsonify({**wordcloud_pos, **wordcloud_neg})
+
+@app.route("/cuplikan-data", methods=["POST"])
+def get_cuplikandata():
+    start_date = datetime.strptime((request.form.get('start_date')), "%Y/%m/%d")
+    end_date = datetime.strptime((request.form.get('end_date')), "%Y/%m/%d")
+
+    data_komentar = get_filtered_data_komentar(start_date, end_date)
+    if not data_komentar.empty:
+        # filter data yang sudah terklasifikasi saja
+        data = data_komentar[data_komentar["opini"].notnull()]
+        data_komentar_json = data.to_json(orient='records')
+
+        return jsonify({'data' : data_komentar_json})
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -483,10 +551,10 @@ def klasifikasi():
                 db.session.flush()
                 
                 if update_op > 0:
-                    msg = "Klasifikasi Opini Berhasil"
+                    msg = "Klasifikasi Sentimen Berbasis Aspek Berhasil Dilakukan"
                     action = "success"
                 else:
-                    msg = "Klasifikasi Opini Gagal"
+                    msg = "Klasifikasi Sentimen Berbasis Aspek Gagal Dilakukan"
                     action = "error"
             db.session.commit()
 
@@ -504,7 +572,7 @@ def klasifikasi():
             db.session.commit()
 
     else:
-        msg= "Semua Data Telah Di Klasifikasi"
+        msg= "Seluruh Data Komentar Telah Diklasifikasi"
         action = "warning"
 
     return jsonify({'action': action, 'msg': msg, 'redirect': True, 'redirectURL': url_for('beranda')}), 200

@@ -12,9 +12,9 @@
         <div class="row mt-4">
           <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="card rounded-2 border-0" style="min-height: 107px;">
-              <div class="card-body skeleton">
-                <h6 class="card-title text-title-card fw-bold skeleton">Filter Tanggal Komentar</h6>
-                <div class="input-group skeleton">
+              <div class="card-body skeleton" id="cardFilterTanggal">
+                <h6 class="card-title text-title-card fw-bold">Filter Tanggal Komentar</h6>
+                <div class="input-group">
                   <span class="input-group-text" id="daterangegroup"><i class='bx bx-filter-alt' width="25px"></i></span>
                   <input type="text" class="form-control" id="dateRangePicker" placeholder="Pilih Rentang Tanggal" aria-label="daterange" aria-describedby="daterangegroup" name="daterange" value="">
                 </div>
@@ -23,12 +23,12 @@
           </div>
           <div class="col-lg-2 col-md-4 col-sm-4">
             <div class="card rounded-2 border-0" style="min-height: 107px;">
-              <div class="card-body skeleton position-relative">
+              <div class="card-body skeleton position-relative" id="cardDataKomentar">
                 <div class="position-absolute top-50 end-0" style="transform: translateY(-50%); padding-right: 16px;">
                     <img src="{{ url_for('static', filename='img/comment.svg') }}" alt="icon" width="60px" height="60px"/>
                 </div>
-                <h6 class="card-title text-title-card fw-bold skeleton">Data Komentar</h6>
-                <p class="card-text fw-bold text-primary-card skeleton" id="c_kom">{{ c_kom }}</p>
+                <h6 class="card-title text-title-card fw-bold">Data Komentar</h6>
+                <p class="card-text fw-bold text-primary-card" id="c_kom">{{ c_kom }}</p>
             </div>
             </div>
           </div>
@@ -120,13 +120,13 @@
                       <option value="Opini">Opini</option>
                       <option value="Non Opini">Non Opini</option>
                     </select>
-                    <table id="tabelCuplikanKomentar" class="table table-striped" width="100%", height="100%">
+                    <table id="tabelCuplikanKomentar" class="table table-striped display responsive nowrap" width="100%" height="100%">
                       <thead>
                         <tr>
                           <th class="dt-head-center">No</th>
                           <th class="dt-head-center">Komentar</th>
                           <th class="dt-head-center">Opini</th>
-                          <th class="dt-head-center">Aspek</th>
+                          <th class="dt-head-center">Topik</th>
                           <th class="dt-head-center">Sentimen</th>
                         </tr>
                       </thead>
@@ -152,7 +152,7 @@
               <div class="col-lg-12 col-md-12 col-sm-12">
                 <div class="card rounded-2 border-0" style="min-height: 372px;">
                   <div class="card-body skeleton">
-                    <h6 class="card-title fw-bold text-title-card skeleton">Komposisi Aspek Layanan Pada Tiap Sentimen</h6>
+                    <h6 class="card-title fw-bold text-title-card skeleton">Komposisi Sentimen Pada Tiap Aspek Layanan</h6>
                     <div id="fig3" class="skeleton" style="height: 100%; width: 100%;"></div>
                   </div>
                 </div>

@@ -181,18 +181,33 @@
 
     <!-- Modal -->
     <div class="modal fade" id="infoModal" tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
             <h3 class="modal-title fs-5" id="infoModalLabel">Petunjuk Penambahan Data Komentar</h3>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            ...
+            <h6><b>A. Petunjuk Untuk Mengambil Data Komentar Instagram dengan Web Scraping</b></h6>
+            <p>
+              1. Kunjungi laman APIFY dengan menekan link <b><a href="https://apify.com/" target="_blank" style="text-decoration: none; color: rgb(33, 48, 99);">berikut</a></b><br> 
+              2. Tekan tombol <b>Login</b> bila sudah memiliki akun atau <b>Sign Up</b> untuk membuat akun baru.<br>
+              3. Pada menu sidebar, pilih menu <b>Actor</b> dan masukkan <b>Instagram Scraper</b> pada kolom pencarian actor name.<br>
+              4. Pilih actor tersebut, kemudian masukkan data yang diminta seperti: URL Instagram, Tanggal postingan, dan data apa yang ingin diambil.<br>
+              5. Tekan tombol <b>Save & Start</b>, kemudian web akan melakukan scraping data.<br>
+              6. Tekan tombol <b>Export Result</b> untuk menyimpan data.<br>
+              7. Pada halaman pop-up 'Export dataset' pilih format file <b>JSON</b> dan selected fields <b>Latest Comment</b>.<br>
+              8. Kemudian, tekan tombol <b>Download</b> untuk mengunduh data.
+            </p><hr>
+            <h6><b>B. Petunjuk Mengunggah Data JSON</b></h6>
+            <p>
+              1. Tekan tombol <b>Pilih File</b>, lalu pilih file JSON yang berisi data komentar yang telah di unduh tadi.<br>
+              2. Setelah di unggah, tekan tombol <b>Simpan</b><br>
+              3. Data komentar terbaru telah berhasil disimpan.<br>
+            </p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-            <!-- <button type="button" class="btn btn-primary">Saya Sudah Paham</button> -->
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Saya Sudah Paham!</button>
           </div>
         </div>
       </div>

@@ -381,6 +381,10 @@ input[type="checkbox"]{
   min-width: 75px!important;
 }
 
+/* #tabelCuplikanKomentar tbody td:nth-child(2) {
+  width: 150px;
+} */
+
 .home-section{
   position: relative;
   background-color: var(--color-body);
