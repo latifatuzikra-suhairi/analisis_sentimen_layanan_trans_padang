@@ -12,5 +12,10 @@
 3. Instalasi GSDMM melalui:
     ```bash
     pip install git+https://github.com/rwalk/gsdmm.git
-4. Download FastText Model dengan mengakses [FastText Model](https://drive.google.com/drive/folders/1MX9bRLHPz84abkGGeWxhg_VI4wAnDFBa?usp=sharing) lalu simpan kedua filenya dalam folder: _static/dictionary/fasttext_
+4. Download FastText Model dengan:
+   Akses [FastText Model](https://drive.google.com/drive/folders/1MX9bRLHPz84abkGGeWxhg_VI4wAnDFBa?usp=sharing) lalu simpan kedua filenya dalam folder:  _static/dictionary/fasttext_
 5. Database ada dalam folder _instance_
+6. Jalankan aplikasi dengan:
+   ```bash
+   python app.py
+   
