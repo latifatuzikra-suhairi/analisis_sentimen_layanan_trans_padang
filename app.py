@@ -196,16 +196,59 @@ def get_data_dashboard():
         return jsonify({'msg': msg, 'action': action, 'user':user})
     
 @app.route("/dashboard_komentar", methods=["POST"])
-def get_data_cuplikan_dashboard(): 
-    start_date = datetime.strptime((request.form.get('start_date')), "%Y/%m/%d")
-    end_date = datetime.strptime((request.form.get('end_date')), "%Y/%m/%d") 
+def get_data_cuplikan_dashboard():
+    start_date_str = request.form.get('start_date')
+    end_date_str = request.form.get('end_date')
+    filter_opini = request.form.get('filter_opini', '')
 
-    # filter data yang sudah terklasifikasi saja
+    # Konversi tanggal dari string
+    start_date = datetime.strptime(start_date_str, "%Y/%m/%d")
+    end_date = datetime.strptime(end_date_str, "%Y/%m/%d")
+
+    print(start_date)
+    print(end_date)
+
+    # Ambil data yang sudah terklasifikasi
     data_komentar = get_filtered_data_komentar(start_date, end_date)
-    data = data_komentar[data_komentar["opini"].notnull()]
-    data_komentar_json = data.to_json(orient='records')
 
-    return jsonify({'data': json.loads(data_komentar_json)})
+    # Filter data berdasarkan parameter pencarian
+    search_value = request.form.get('search[value]', '')
+    if search_value:
+        data_komentar = data_komentar[data_komentar.apply(lambda row: search_value.lower() in row.to_string().lower(), axis=1)]
+   
+    # Filter berdasarkan pilihan opini
+    if filter_opini:
+        if filter_opini == "Opini":
+            data_komentar = data_komentar[data_komentar['opini'] == 1]
+        elif filter_opini == "Non Opini":
+            data_komentar = data_komentar[data_komentar['opini'] == 0]
+
+    # Filter hanya data yang memiliki opini (not null)
+    data = data_komentar[data_komentar["opini"].notnull()]
+
+    # Get pagination parameters from the request
+    start = int(request.form.get('start', 0))
+    length = int(request.form.get('length', 10))
+
+    # Hitung jumlah total records
+    total_records = len(data)
+
+    # Paginate data
+    paginated_data = data.iloc[start:start + length]
+
+    # Konversi data menjadi format JSON
+    data_komentar_json = paginated_data.to_json(orient='records')
+    data_json = json.loads(data_komentar_json)
+
+    # Format data untuk dikembalikan ke DataTables
+    response = {
+        'draw': int(request.form.get('draw', 1)),
+        'recordsTotal': total_records,
+        'recordsFiltered': total_records,
+        'data': data_json
+    }
+
+    return jsonify(response)
 
 @app.route("/wordcloud_pos", methods=["POST"])
 def get_wordcloud_pos():

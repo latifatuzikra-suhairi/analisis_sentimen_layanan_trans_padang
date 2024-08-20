@@ -112,15 +112,15 @@
         <div class="row mt-4">
           <div class="col-lg-6 col-md-12 col-sm-12">
             <div class="card rounded-2 border-0">
-              <div class="card-body skeleton" style="height: 768px;">
+              <div class="card-body skeleton" style="height: 768px; overflow: auto;">
                 <h6 class="card-title fw-bold text-title-card skeleton">Cuplikan Data Komentar</h6>
-                  <div class="datatable mt-4 skeleton">
+                  <div class="datatable mt-4 skeleton table-responsive">
                     <select id="filter" class="form-select">
                       <option value="">Semua</option>
                       <option value="Opini">Opini</option>
                       <option value="Non Opini">Non Opini</option>
                     </select>
-                    <table id="tabelCuplikanKomentar" class="table table-striped display responsive nowrap" width="100%" height="100%">
+                    <table id="tabelCuplikanKomentar" class="table table-striped" width="100%" height="100%" style="overflow-y: scroll;">
                       <thead>
                         <tr>
                           <th class="dt-head-center">No</th>
@@ -159,7 +159,6 @@
               </div>
             </div>
           </div>
-          
         </div> 
 
         <div class="row mt-4">
