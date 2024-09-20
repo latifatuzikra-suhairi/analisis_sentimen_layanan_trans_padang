@@ -65,7 +65,7 @@ Text preprocessing yang dilakukan:
 - Menghapus baris data yang kosong
 - Label encoding: (1) Opini dan (0) Non Opini
   Sebaran data opini dan non opini:
-  ![Sebaran Data Opini dan Non Opini](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/SebaranData_Opini dan Non Opini.png)
+  ![Sebaran Data Opini dan Non Opini](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/SebaranData_Opini%20dan%20Non%20Opini.png)
 - Feature selection dengan algoritma Information Gain
 - Tokenizing
   
@@ -116,7 +116,7 @@ Evaluasi model klasifikasi opini dan non opini dilakukan menggunakan **Confusion
    disp.plot(ax=ax, cmap=plt.cm.Blues)
    ```
    **Hasil**
-   ![Confusion Matrix Klasifikasi Opini dan Non Opini](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/ConfusionMatrix_Klasifikasi_Opini dan Non Opini.png)
+   ![Confusion Matrix Klasifikasi Opini dan Non Opini](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/ConfusionMatrix_Klasifikasi_Opini%20dan%20Non%20Opini.png)
    Dari confusion matrix di atas, dapat dihitung **metrik evaluasi**:
    **1. Accuracy : 81.48%
    2. Precision : 82.48%
@@ -236,7 +236,7 @@ Evaluasi model klasifikasi sentimen dilakukan menggunakan **Confusion Matrix*** 
    disp.plot(ax=ax, cmap=plt.cm.Blues)
    ```
    **Hasil**
-   ![Confusion Matrix Klasifikasi Sentimen](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/ConfusionMatrix_Klasifikasi_Sentimen.png)
+     ![Confusion Matrix Klasifikasi Sentimen](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/ConfusionMatrix_Klasifikasi_Sentimen.png)
    Dari confusion matrix di atas, dapat dihitung **metrik evaluasi**:
    **1. Accuracy : 84.03%
    2. Precision : 86.86%
@@ -256,5 +256,5 @@ Sistem dibangun menggunakan `framework Flask` agar memudahkan pengguna sistem un
 1. Halaman Dashboard
    ![Dashboard Sistem](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/Dashboard.png)
 3. Halaman Admin
-   ![Manage Comment](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/Manage_Comments.png)
+   ![Manage Comment](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/Manage%20Comments.png)
 
