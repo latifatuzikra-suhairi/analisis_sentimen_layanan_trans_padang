@@ -64,8 +64,10 @@ Text preprocessing yang dilakukan:
 - Menghapus kata yang kurang dari 3 karakter
 - Menghapus baris data yang kosong
 - Label encoding: (1) Opini dan (0) Non Opini
+  
   Sebaran data opini dan non opini:
   ![Sebaran Data Opini dan Non Opini](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/SebaranData_Opini%20dan%20Non%20Opini.png)
+  
 - Feature selection dengan algoritma Information Gain
 - Tokenizing
   
@@ -117,11 +119,12 @@ Evaluasi model klasifikasi opini dan non opini dilakukan menggunakan **Confusion
    ```
    **Hasil**
    ![Confusion Matrix Klasifikasi Opini dan Non Opini](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/ConfusionMatrix_Klasifikasi_Opini%20dan%20Non%20Opini.png)
-   Dari confusion matrix di atas, dapat dihitung **metrik evaluasi**:
-   **1. Accuracy : 81.48%
-   2. Precision : 82.48%
-   3. Recall : 86.88%
-   4. F1-Score : 84.63%**
+
+  Dari confusion matrix di atas, dapat dihitung **metrik evaluasi**:
+   **1. Accuracy : 81.48%**
+   **2. Precision : 82.48%**
+   **3. Recall : 86.88%**
+   **4. F1-Score : 84.63%**
    
 - ROC AUC Score
    ```python
@@ -169,8 +172,8 @@ def get_coherence_score(topics, dictionary, corpus, texts):
 coherence_cv, coherence_uci = get_coherence_score(topics, dictionary, corpus, data_layanan["Hasil BigramTrigram"])
 ```
 **Hasil**
-**1. Coherence score cv : 0.55
-2. Coherence score uci :-0.43**
+**1. Coherence score cv : 0.55**
+**2. Coherence score uci :-0.43**
 
 dengan **7 Aspek Layanan**:
 1. Isu Waktu Operasional
@@ -197,8 +200,10 @@ Text preprocessing yang dilakukan:
 - Stemming
 - Menghapus baris data yang kosong
 - Label encoding: (1) Positif dan (0) Negatif
+
   Sebaran data sentimen positif dan negatif:
   ![Sebaran Data Sentimen Positif dan Negatif](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/SebaranData_Sentimen.png)
+
 - Tokenizing
   
 #### 2. MODEL DEVELOPMENT
@@ -237,11 +242,12 @@ Evaluasi model klasifikasi sentimen dilakukan menggunakan **Confusion Matrix*** 
    ```
    **Hasil**
      ![Confusion Matrix Klasifikasi Sentimen](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/ConfusionMatrix_Klasifikasi_Sentimen.png)
-   Dari confusion matrix di atas, dapat dihitung **metrik evaluasi**:
-   **1. Accuracy : 84.03%
-   2. Precision : 86.86%
-   3. Recall : 85.61%
-   4. F1-Score : 86.23%**
+
+  Dari confusion matrix di atas, dapat dihitung **metrik evaluasi**:
+   **1. Accuracy : 84.03%**
+   **2. Precision : 86.86%**
+   **3. Recall : 85.61%**
+   **4. F1-Score : 86.23%**
    
 - ROC AUC Score
    ```python
@@ -255,6 +261,6 @@ Evaluasi model klasifikasi sentimen dilakukan menggunakan **Confusion Matrix*** 
 Sistem dibangun menggunakan `framework Flask` agar memudahkan pengguna sistem untuk mendapatkah hasil analisis. Berikut tampilan sistem:
 1. Halaman Dashboard
    ![Dashboard Sistem](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/Dashboard.png)
-3. Halaman Admin
+2. Halaman Admin
    ![Manage Comment](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/Manage%20Comments.png)
 
