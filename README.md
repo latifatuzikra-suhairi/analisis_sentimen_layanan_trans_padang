@@ -65,7 +65,7 @@ Text preprocessing yang dilakukan:
 - Menghapus baris data yang kosong
 - Label encoding: (1) Opini dan (0) Non Opini
   Sebaran data opini dan non opini:
-  ![Sebaran Data Opini dan Non Opini]()
+  ![Sebaran Data Opini dan Non Opini](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/SebaranData_Opini dan Non Opini.png)
 - Feature selection dengan algoritma Information Gain
 - Tokenizing
   
@@ -116,7 +116,7 @@ Evaluasi model klasifikasi opini dan non opini dilakukan menggunakan **Confusion
    disp.plot(ax=ax, cmap=plt.cm.Blues)
    ```
    **Hasil**
-   ![Confusion Matrix Klasifikasi Opini dan Non Opini]()
+   ![Confusion Matrix Klasifikasi Opini dan Non Opini](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/ConfusionMatrix_Klasifikasi_Opini dan Non Opini.png)
    Dari confusion matrix di atas, dapat dihitung **metrik evaluasi**:
    **1. Accuracy : 81.48%
    2. Precision : 82.48%
@@ -131,7 +131,6 @@ Evaluasi model klasifikasi opini dan non opini dilakukan menggunakan **Confusion
    ```
    **Hasil: 0.8813**
   
-
 ### TOPIC MODELLING
 #### 1. TEXT PREPROCESSING
 Text preprocessing yang dilakukan:
@@ -173,6 +172,15 @@ coherence_cv, coherence_uci = get_coherence_score(topics, dictionary, corpus, da
 **1. Coherence score cv : 0.55
 2. Coherence score uci :-0.43**
 
+dengan **7 Aspek Layanan**:
+1. Isu Waktu Operasional
+2. Isu Halte
+3. Isu Rute
+4. Isu Pembayaran
+5. Isu Perawatan Bus
+6. Isu Transit
+7. Isu Petugas
+
 ### MODEL KLASIFIKASI SENTIMEN
 #### 1. TEXT PREPROCESSING
 Text preprocessing yang dilakukan:
@@ -190,7 +198,7 @@ Text preprocessing yang dilakukan:
 - Menghapus baris data yang kosong
 - Label encoding: (1) Positif dan (0) Negatif
   Sebaran data sentimen positif dan negatif:
-  ![Sebaran Data Sentimen Positif dan Negatif]()
+  ![Sebaran Data Sentimen Positif dan Negatif](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/SebaranData_Sentimen.png)
 - Tokenizing
   
 #### 2. MODEL DEVELOPMENT
@@ -228,7 +236,7 @@ Evaluasi model klasifikasi sentimen dilakukan menggunakan **Confusion Matrix*** 
    disp.plot(ax=ax, cmap=plt.cm.Blues)
    ```
    **Hasil**
-   ![Confusion Matrix Klasifikasi Sentimen]()
+   ![Confusion Matrix Klasifikasi Sentimen](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/ConfusionMatrix_Klasifikasi_Sentimen.png)
    Dari confusion matrix di atas, dapat dihitung **metrik evaluasi**:
    **1. Accuracy : 84.03%
    2. Precision : 86.86%
@@ -244,5 +252,9 @@ Evaluasi model klasifikasi sentimen dilakukan menggunakan **Confusion Matrix*** 
    **Hasil: 0.9167**
 
 ### SISTEM ANALISIS SENTIMEN BERBASIS ASPEK PADA TRANS PADANG
-Sistem dibangun menggunakan `framework Flask` agar memudahkan pengguna sistem untuk mendapatkah hasil analisis. Berikut tampilan sistem
+Sistem dibangun menggunakan `framework Flask` agar memudahkan pengguna sistem untuk mendapatkah hasil analisis. Berikut tampilan sistem:
+1. Halaman Dashboard
+   ![Dashboard Sistem](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/Dashboard.png)
+3. Halaman Admin
+   ![Manage Comment](https://raw.githubusercontent.com/latifatuzikra-suhairi/analisis_sentimen_layanan_trans_padang/main/file_upload/Manage_Comments.png)
 
