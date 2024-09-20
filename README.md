@@ -6,6 +6,11 @@ Trans Padang merupakan layanan transportasi dalam kota Padang berbasis Bus Rapid
 1. [FITUR UTAMA](#fitur-utama)
 2. [INSTALASI](#instalasi)
 3. [PROSES PEMBANGUNAN](#proses-pembangunan)
+   - [AKUISISI DATA](#akuisisi-data)
+   - [MODEL KLASIFIKASI OPINI DAN NON OPINI](#model-klasifikasi-opini-dan-non-opini)
+   - [TOPIC MODELLING](#topic-modelling)
+   - [MODEL KLASIFIKASI SENTIMEN](#model-klasifikasi-sentimen)
+   - [SISTEM ANALISIS SENTIMEN BERBASIS ASPEK PADA TRANS PADANG](sistem-analisis-sentimen-berbasis-aspek-pada-trans-padang)
 
 ## FITUR UTAMA
 Terdapat dua pengguna sistem ini, yakni admin dan staf, yang memiliki fungsional masing-masing:
